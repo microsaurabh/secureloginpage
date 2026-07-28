@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-const required = ['MONGODB_URI', 'JWT_ACCESS_SECRET', 'JWT_REFRESH_SECRET'];
+const required = ['MONGODB_URI'];
 
 export function validateEnvironment() {
   if (process.env.NODE_ENV === 'test') return;
@@ -15,8 +15,8 @@ export const env = {
   mongoUri: process.env.MONGODB_URI,
   clientOrigin: process.env.CLIENT_ORIGIN ?? 'http://localhost:5173',
   logLevel: process.env.LOG_LEVEL ?? 'info',
-  jwtAccessSecret: process.env.JWT_ACCESS_SECRET,
-  jwtRefreshSecret: process.env.JWT_REFRESH_SECRET,
+  jwtAccessSecret: process.env.JWT_ACCESS_SECRET ?? 'development-access-secret',
+  jwtRefreshSecret: process.env.JWT_REFRESH_SECRET ?? 'development-refresh-secret',
   jwtAccessTtl: process.env.JWT_ACCESS_TTL ?? '15m',
   refreshTokenTtlDays: Number(process.env.REFRESH_TOKEN_TTL_DAYS ?? 7),
   rememberMeTtlDays: Number(process.env.REMEMBER_ME_TTL_DAYS ?? 30),

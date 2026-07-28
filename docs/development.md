@@ -1,5 +1,32 @@
 # Development
 
-Copy `backend/.env.example` to `backend/.env` and set secure secrets. Copy `frontend/.env.example` to `frontend/.env` if the API base URL differs.
+Use Node.js 22 and npm 10+. Start by copying the example environment files and filling in the required secrets:
 
-Use Node.js 22, then run `npm install` and `npm run dev`. The backend requires MongoDB; `docker compose -f docker/docker-compose.yml up mongo` starts a local instance.
+```bash
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+```
+
+The backend requires MongoDB. A local database can be started with:
+
+```bash
+docker compose -f docker/docker-compose.yml up -d mongo
+```
+
+Install dependencies and start both services:
+
+```bash
+npm install
+npm run dev
+```
+
+Useful commands:
+
+```bash
+npm run lint
+npm test
+npm run build
+npm run seed -w backend
+```
+
+The API is available at `http://localhost:3000/api/v1` and the frontend at `http://localhost:5173`.

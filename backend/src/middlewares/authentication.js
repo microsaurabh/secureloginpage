@@ -2,6 +2,10 @@ import { ApiError } from '../utils/api-error.js';
 import { verifyAccessToken } from '../utils/jwt.js';
 
 export function requireAuthentication(req, _res, next) {
+  if (req.auth) {
+    return next();
+  }
+
   const [scheme, token] = (req.headers.authorization ?? '').split(' ');
   if (scheme !== 'Bearer' || !token)
     return next(

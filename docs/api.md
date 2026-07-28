@@ -6,14 +6,47 @@ Interactive OpenAPI documentation is exposed by the backend at `/api-docs`.
 
 All application endpoints are served beneath `/api/v1`. A future breaking API revision will use a new URL version without changing the existing contract.
 
+## Response format
+
+Successful responses use a consistent envelope:
+
+```json
+{
+  "data": { "...": "..." }
+}
+```
+
+Error responses use:
+
+```json
+{
+  "error": {
+    "message": "...",
+    "details": []
+  }
+}
+```
+
 ## Health
 
 `GET /api/v1/health` returns a 200 response containing the service name, status, and ISO-8601 timestamp. It requires no authentication because it is intended for load balancers and orchestrators.
 
-Error responses use the envelope `{ "error": { "message": "...", "details": [] } }`.
-
 ## Authentication
 
-`/api/v1/auth` provides registration, login, logout, refresh, password reset, password change, and email verification. Login and refresh return a short-lived JWT access token in the response and rotate an opaque refresh token stored only in an HttpOnly cookie. Use `Authorization: Bearer <access-token>` for protected endpoints.
+`POST /api/v1/auth/register` creates an account and sends an email verification message.
+
+`POST /api/v1/auth/login` authenticates a user and returns a short-lived JWT access token. The refresh token is rotated and stored as a secure HttpOnly cookie.
+
+`POST /api/v1/auth/refresh` rotates the current refresh token and issues a new access token.
+
+`POST /api/v1/auth/logout` invalidates the current refresh token.
+
+`POST /api/v1/auth/forgot-password` requests a reset flow for a known email address.
+
+`POST /api/v1/auth/reset-password` completes a password reset using a one-time token.
+
+`POST /api/v1/auth/change-password` changes the authenticated user password. Use `Authorization: Bearer <access-token>` for this endpoint.
+
+`POST /api/v1/auth/verify-email` verifies a user email address using a one-time token.
 
 Refresh-token reuse revokes the entire token family. Password changes and resets revoke every active refresh token for the account.
