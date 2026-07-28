@@ -1,11 +1,11 @@
-import { body } from 'express-validator';
+import { body, query } from 'express-validator';
 import { validateRequest } from '../../middlewares/validate-request.js';
 
 export const listUsersValidator = [
-  body('page').optional().isInt({ min: 1 }).toInt(),
-  body('limit').optional().isInt({ min: 1, max: 100 }).toInt(),
-  body('search').optional().isString().trim().escape(),
-  body('status').optional().isIn(['active', 'inactive', 'locked']).withMessage('Invalid status'),
+  query('page').optional().isInt({ min: 1 }).toInt(),
+  query('limit').optional().isInt({ min: 1, max: 100 }).toInt(),
+  query('search').optional().isString().trim().escape(),
+  query('status').optional().isIn(['active', 'inactive', 'locked']).withMessage('Invalid status'),
   validateRequest
 ];
 

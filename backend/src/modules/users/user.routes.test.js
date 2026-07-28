@@ -26,4 +26,18 @@ describe('user routes', () => {
     const response = await request(buildApp(service)).get('/api/v1/users/me').expect(200);
     expect(response.body.data.user.email).toBe('ada@example.com');
   });
+
+  it('passes query parameters to the user list service', async () => {
+    const service = {
+      listUsers: jest.fn().mockResolvedValue({ items: [], total: 0, page: 2, limit: 10 })
+    };
+
+    await request(buildApp(service))
+      .get('/api/v1/users?page=2&limit=10&search=ada&status=active')
+      .expect(200);
+
+    expect(service.listUsers).toHaveBeenCalledWith(
+      expect.objectContaining({ page: 2, limit: 10, search: 'ada', status: 'active' })
+    );
+  });
 });

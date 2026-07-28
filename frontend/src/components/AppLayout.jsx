@@ -32,6 +32,9 @@ export function AppLayout({ children, mode, toggleMode }) {
             <Button component={RouterLink} to="/profile" color="inherit">
               Profile
             </Button>
+            <Button component={RouterLink} to="/users" color="inherit">
+              Users
+            </Button>
             <Button color="inherit" onClick={toggleMode}>
               {mode === 'light' ? 'Dark mode' : 'Light mode'}
             </Button>

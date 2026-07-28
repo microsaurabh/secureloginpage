@@ -10,6 +10,7 @@ import { LoginPage } from './pages/LoginPage.jsx';
 import { ProfilePage } from './pages/ProfilePage.jsx';
 import { RegisterPage } from './pages/RegisterPage.jsx';
 import { ResetPasswordPage } from './pages/ResetPasswordPage.jsx';
+import { UsersPage } from './pages/UsersPage.jsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { theme as baseTheme } from './theme.js';
@@ -53,6 +54,14 @@ function AppShell() {
               element={
                 <AppLayout mode={mode} toggleMode={toggleMode}>
                   <ProfilePage />
+                </AppLayout>
+              }
+            />
+            <Route
+              path="/users"
+              element={
+                <AppLayout mode={mode} toggleMode={toggleMode}>
+                  <UsersPage />
                 </AppLayout>
               }
             />

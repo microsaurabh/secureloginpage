@@ -16,7 +16,14 @@ export class UserController {
   };
 
   listUsers = async (req, res) => {
-    const result = await this.service.listUsers(req.body ?? {});
+    const result = await this.service.listUsers({
+      page: req.query.page ? Number(req.query.page) : 1,
+      limit: req.query.limit ? Number(req.query.limit) : 20,
+      search: req.query.search ?? '',
+      status: req.query.status ?? undefined,
+      sortBy: req.query.sortBy ?? 'createdAt',
+      sortOrder: req.query.sortOrder ?? 'desc'
+    });
     res.status(200).json({ data: result });
   };
 

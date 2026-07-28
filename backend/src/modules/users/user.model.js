@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema(
     },
     passwordHash: { type: String, required: true, select: false },
     roles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Role' }],
+    avatarUrl: { type: String, trim: true, maxlength: 2048, default: null },
     status: {
       type: String,
       enum: ['active', 'inactive', 'locked'],

@@ -6,6 +6,8 @@ import { RoleRepository } from '../roles/role.repository.js';
 import { RefreshTokenRepository } from '../refresh-tokens/refresh-token.repository.js';
 import { PasswordResetRepository } from '../password-resets/password-reset.repository.js';
 import { AuditLogRepository } from '../audit-logs/audit-log.repository.js';
+import { AuditLog } from '../audit-logs/audit-log.model.js';
+import { LoginHistory } from '../login-history/login-history.model.js';
 import bcrypt from 'bcrypt';
 
 export class UserService {
@@ -30,11 +32,21 @@ export class UserService {
     if (!user || user.isDeleted) {
       throw new ApiError(404, 'User not found', undefined, 'USER_NOT_FOUND');
     }
-    const updated = await this.users.updateById(userId, data);
+
+    const allowedFields = ['firstName', 'lastName', 'avatarUrl'];
+    const update = Object.fromEntries(
+      Object.entries(data).filter(([key, value]) => allowedFields.includes(key) && value !== undefined)
+    );
+
+    if (Object.keys(update).length === 0) {
+      return { user: this.toUser(user) };
+    }
+
+    const updated = await this.users.updateById(userId, update);
     return { user: this.toUser(updated) };
   }
 
-  async listUsers({ page = 1, limit = 20, search = '', status }) {
+  async listUsers({ page = 1, limit = 20, search = '', status, sortBy = 'createdAt', sortOrder = 'desc' }) {
     const query = { isDeleted: false };
     if (status) query.status = status;
     if (search) {
@@ -46,7 +58,11 @@ export class UserService {
     }
 
     const [items, total] = await Promise.all([
-      this.users.find(query, { skip: (page - 1) * limit, limit, sort: { createdAt: -1 } }),
+      this.users.find(query, {
+        skip: (page - 1) * limit,
+        limit,
+        sort: { [sortBy]: sortOrder === 'asc' ? 1 : -1 }
+      }),
       this.users.model.countDocuments(query)
     ]);
 
@@ -127,7 +143,7 @@ export class UserService {
     if (!user || user.isDeleted) {
       throw new ApiError(404, 'User not found', undefined, 'USER_NOT_FOUND');
     }
-    const records = await this.users.model.db.models.LoginHistory?.find({ user: userId }).sort({ createdAt: -1 }).limit(20);
+    const records = await LoginHistory.find({ user: userId }).sort({ createdAt: -1 }).limit(20);
     return { items: records ?? [] };
   }
 
@@ -136,7 +152,7 @@ export class UserService {
     if (!user || user.isDeleted) {
       throw new ApiError(404, 'User not found', undefined, 'USER_NOT_FOUND');
     }
-    const records = await this.users.model.db.models.AuditLog?.find({ actor: userId }).sort({ createdAt: -1 }).limit(20);
+    const records = await AuditLog.find({ actor: userId }).sort({ createdAt: -1 }).limit(20);
     return { items: records ?? [] };
   }
 
@@ -148,6 +164,7 @@ export class UserService {
       email: user.email,
       roles: user.roles?.map((role) => role.name ?? role) ?? [],
       status: user.status,
+      avatarUrl: user.avatarUrl,
       createdAt: user.createdAt
     };
   }
