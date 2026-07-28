@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Box, Button, Chip, CircularProgress, FormControl, InputLabel, MenuItem, Paper, Select, Stack, Switch, TextField, Typography, FormControlLabel, Checkbox } from '@mui/material';
+import { Alert, Box, Button, Chip, CircularProgress, Divider, FormControl, InputLabel, MenuItem, Paper, Select, Stack, Switch, TextField, Typography, FormControlLabel, Checkbox, alpha } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { assignRolePermissions, assignUserRoles, getPermissions, getRoles, getUsers, savePermission, saveRole } from '../api/rbac.js';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -98,10 +98,25 @@ export function RbacPage() {
     );
   };
 
+  const summary = useMemo(() => ({
+    roles: roles.length,
+    permissions: permissions.length,
+    users: users.length
+  }), [permissions.length, roles.length, users.length]);
+
   return (
     <Stack spacing={3}>
-      <Typography variant="h5">RBAC management</Typography>
-      <Typography color="text.secondary">Create and assign roles, permissions, and user access.</Typography>
+      <Paper sx={{ p: 3, background: (theme) => alpha(theme.palette.primary.main, 0.06), border: '1px solid', borderColor: 'divider' }}>
+        <Stack spacing={1.5}>
+          <Typography variant="h5">RBAC administration</Typography>
+          <Typography color="text.secondary">Create access policies, connect users to roles, and map permissions to the roles your teams actually use.</Typography>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
+            <Chip label={`${summary.roles} roles`} color="primary" variant="outlined" />
+            <Chip label={`${summary.permissions} permissions`} color="secondary" variant="outlined" />
+            <Chip label={`${summary.users} users`} variant="outlined" />
+          </Stack>
+        </Stack>
+      </Paper>
 
       <Paper sx={{ p: 3 }}>
         <Stack spacing={2}>
@@ -112,6 +127,7 @@ export function RbacPage() {
           <Button variant="contained" onClick={handleCreateRole} disabled={roleMutation.isPending}>
             {roleMutation.isPending ? 'Saving...' : 'Save role'}
           </Button>
+          {roleMutation.isSuccess ? <Alert severity="success">Role created successfully.</Alert> : null}
         </Stack>
       </Paper>
 
@@ -124,73 +140,84 @@ export function RbacPage() {
           <Button variant="contained" onClick={handleCreatePermission} disabled={permissionMutation.isPending}>
             {permissionMutation.isPending ? 'Saving...' : 'Save permission'}
           </Button>
+          {permissionMutation.isSuccess ? <Alert severity="success">Permission created successfully.</Alert> : null}
         </Stack>
       </Paper>
 
       <Paper sx={{ p: 3 }}>
-        <Typography variant="h6">Assign roles to users</Typography>
-        {usersLoading ? <CircularProgress size={20} /> : (
-          <Stack spacing={2} mt={2}>
-            <FormControl fullWidth>
-              <InputLabel id="user-select-label">User</InputLabel>
-              <Select labelId="user-select-label" value={selectedUserId} label="User" onChange={(e) => setSelectedUserId(e.target.value)}>
-                {users.map((user) => (
-                  <MenuItem key={user.id} value={user.id}>{`${user.firstName} ${user.lastName} (${user.email})`}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            {rolesLoading ? <CircularProgress size={20} /> : (
+        <Stack spacing={2}>
+          <Typography variant="h6">Assign roles to users</Typography>
+          <Typography color="text.secondary">Choose a user and toggle the roles they should inherit.</Typography>
+          {usersLoading ? <CircularProgress size={20} /> : (
+            <Stack spacing={2}>
+              <FormControl fullWidth>
+                <InputLabel id="user-select-label">User</InputLabel>
+                <Select labelId="user-select-label" value={selectedUserId} label="User" onChange={(e) => setSelectedUserId(e.target.value)}>
+                  {users.map((user) => (
+                    <MenuItem key={user.id} value={user.id}>{`${user.firstName} ${user.lastName} (${user.email})`}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              {rolesLoading ? <CircularProgress size={20} /> : (
+                <Stack spacing={1}>
+                  {roles.map((role) => (
+                    <Paper key={role.id} variant="outlined" sx={{ p: 1.25, background: selectedUserRoleIds.includes(role.id) ? (theme) => alpha(theme.palette.primary.main, 0.08) : 'transparent' }}>
+                      <FormControlLabel
+                        control={<Checkbox checked={selectedUserRoleIds.includes(role.id)} onChange={() => handleToggleUserRole(role.id)} />}
+                        label={`${role.name} ${role.isSystem ? '(system)' : ''}`}
+                      />
+                    </Paper>
+                  ))}
+                </Stack>
+              )}
+              <Button variant="contained" onClick={() => userRolesMutation.mutate({ userId: selectedUserId, roleIds: selectedUserRoleIds })} disabled={!selectedUserId || userRolesMutation.isPending}>
+                {userRolesMutation.isPending ? 'Saving...' : 'Save user roles'}
+              </Button>
+              {userRolesMutation.isSuccess ? <Alert severity="success">User roles updated.</Alert> : null}
+            </Stack>
+          )}
+        </Stack>
+      </Paper>
+
+      <Paper sx={{ p: 3 }}>
+        <Stack spacing={2}>
+          <Typography variant="h6">Assign permissions to roles</Typography>
+          <Typography color="text.secondary">Select a role and check the permissions it should carry.</Typography>
+          {rolesLoading || permissionsLoading ? <CircularProgress size={20} /> : (
+            <Stack spacing={2}>
+              <FormControl fullWidth>
+                <InputLabel id="role-select-label">Role</InputLabel>
+                <Select labelId="role-select-label" value={selectedRoleId} label="Role" onChange={(e) => setSelectedRoleId(e.target.value)}>
+                  {roles.map((role) => (
+                    <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
               <Stack spacing={1}>
-                {roles.map((role) => (
-                  <FormControlLabel
-                    key={role.id}
-                    control={<Checkbox checked={selectedUserRoleIds.includes(role.id)} onChange={() => handleToggleUserRole(role.id)} />}
-                    label={`${role.name} ${role.isSystem ? '(system)' : ''}`}
-                  />
+                {permissions.map((permission) => (
+                  <Paper key={permission.id} variant="outlined" sx={{ p: 1.25, background: selectedRolePermissionIds.includes(permission.id) ? (theme) => alpha(theme.palette.secondary.main, 0.08) : 'transparent' }}>
+                    <FormControlLabel
+                      control={<Checkbox checked={selectedRolePermissionIds.includes(permission.id)} onChange={() => handleToggleRolePermission(permission.id)} />}
+                      label={`${permission.resource}:${permission.action}`}
+                    />
+                  </Paper>
                 ))}
               </Stack>
-            )}
-            <Button variant="contained" onClick={() => userRolesMutation.mutate({ userId: selectedUserId, roleIds: selectedUserRoleIds })} disabled={!selectedUserId || userRolesMutation.isPending}>
-              {userRolesMutation.isPending ? 'Saving...' : 'Save user roles'}
-            </Button>
-          </Stack>
-        )}
-      </Paper>
-
-      <Paper sx={{ p: 3 }}>
-        <Typography variant="h6">Assign permissions to roles</Typography>
-        {rolesLoading || permissionsLoading ? <CircularProgress size={20} /> : (
-          <Stack spacing={2} mt={2}>
-            <FormControl fullWidth>
-              <InputLabel id="role-select-label">Role</InputLabel>
-              <Select labelId="role-select-label" value={selectedRoleId} label="Role" onChange={(e) => setSelectedRoleId(e.target.value)}>
-                {roles.map((role) => (
-                  <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <Stack spacing={1}>
-              {permissions.map((permission) => (
-                <FormControlLabel
-                  key={permission.id}
-                  control={<Checkbox checked={selectedRolePermissionIds.includes(permission.id)} onChange={() => handleToggleRolePermission(permission.id)} />}
-                  label={`${permission.resource}:${permission.action}`}
-                />
-              ))}
+              <Button variant="contained" onClick={() => rolePermissionsMutation.mutate({ roleId: selectedRoleId, permissionIds: selectedRolePermissionIds })} disabled={!selectedRoleId || rolePermissionsMutation.isPending}>
+                {rolePermissionsMutation.isPending ? 'Saving...' : 'Save role permissions'}
+              </Button>
+              {rolePermissionsMutation.isSuccess ? <Alert severity="success">Role permissions updated.</Alert> : null}
             </Stack>
-            <Button variant="contained" onClick={() => rolePermissionsMutation.mutate({ roleId: selectedRoleId, permissionIds: selectedRolePermissionIds })} disabled={!selectedRoleId || rolePermissionsMutation.isPending}>
-              {rolePermissionsMutation.isPending ? 'Saving...' : 'Save role permissions'}
-            </Button>
-          </Stack>
-        )}
+          )}
+        </Stack>
       </Paper>
 
       <Paper sx={{ p: 3 }}>
-        <Typography variant="h6">Roles</Typography>
+        <Typography variant="h6">Current roles</Typography>
         {rolesLoading ? <CircularProgress size={20} /> : (
           <Stack spacing={1} mt={2}>
             {roles.map((role) => (
-              <Box key={role.id} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Box key={role.id} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid', borderColor: 'divider', pb: 1 }}>
                 <Typography>{role.name}</Typography>
                 <Chip label={role.isSystem ? 'System' : 'Custom'} size="small" />
               </Box>
@@ -200,11 +227,11 @@ export function RbacPage() {
       </Paper>
 
       <Paper sx={{ p: 3 }}>
-        <Typography variant="h6">Permissions</Typography>
+        <Typography variant="h6">Current permissions</Typography>
         {permissionsLoading ? <CircularProgress size={20} /> : (
           <Stack spacing={1} mt={2}>
             {permissions.map((permission) => (
-              <Box key={permission.id} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Box key={permission.id} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid', borderColor: 'divider', pb: 1 }}>
                 <Typography>{permission.resource}:{permission.action}</Typography>
                 <Chip label={permission.description} size="small" />
               </Box>
