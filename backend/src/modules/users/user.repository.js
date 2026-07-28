@@ -14,4 +14,13 @@ export class UserRepository extends BaseRepository {
   findByIdWithRoles(id) {
     return this.model.findById(id).populate('roles');
   }
+
+  findByVerificationHash(tokenHash) {
+    return this.model
+      .findOne({
+        emailVerificationTokenHash: tokenHash,
+        emailVerificationExpiresAt: { $gt: new Date() }
+      })
+      .select('+emailVerificationTokenHash');
+  }
 }

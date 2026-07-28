@@ -23,6 +23,8 @@ const userSchema = new mongoose.Schema(
       index: true
     },
     emailVerifiedAt: { type: Date, default: null },
+    emailVerificationTokenHash: { type: String, select: false, default: null },
+    emailVerificationExpiresAt: { type: Date, default: null },
     failedLoginAttempts: { type: Number, default: 0, min: 0 },
     lockedUntil: { type: Date, default: null }
   },

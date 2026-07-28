@@ -12,7 +12,15 @@ export class RefreshTokenRepository extends BaseRepository {
       .select('+tokenHash');
   }
 
+  findByHash(tokenHash) {
+    return this.model.findOne({ tokenHash }).select('+tokenHash');
+  }
+
   revokeFamily(familyId) {
     return this.model.updateMany({ familyId, revokedAt: null }, { revokedAt: new Date() });
+  }
+
+  revokeForUser(user) {
+    return this.model.updateMany({ user, revokedAt: null }, { revokedAt: new Date() });
   }
 }

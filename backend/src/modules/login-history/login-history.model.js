@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const loginHistorySchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null, index: true },
     successful: { type: Boolean, required: true, index: true },
     failureReason: { type: String, trim: true, maxlength: 250, default: null },
     ipAddress: { type: String, trim: true, maxlength: 45, default: null },
