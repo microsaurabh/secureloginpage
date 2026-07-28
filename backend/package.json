@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
+    "seed": "node src/seeds/seed-default-roles.js",
     "build": "node --check src/server.js",
     "lint": "eslint src",
     "test": "node --experimental-vm-modules ../node_modules/jest/bin/jest.js --runInBand"

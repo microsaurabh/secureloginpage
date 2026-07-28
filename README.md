@@ -22,6 +22,14 @@ npm test
 npm run build
 ```
 
+## Database seed
+
+After setting `backend/.env` and starting MongoDB, seed the default system roles:
+
+```bash
+npm run seed -w backend
+```
+
 ## Documentation
 
-See [architecture](docs/architecture.md), [development](docs/development.md), [API](docs/api.md), [coding standards](docs/coding-standards.md), and [folder structure](docs/folder-structure.md).
+See [architecture](docs/architecture.md), [development](docs/development.md), [database design](docs/database.md), [API](docs/api.md), [coding standards](docs/coding-standards.md), and [folder structure](docs/folder-structure.md).

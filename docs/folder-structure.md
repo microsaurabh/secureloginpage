@@ -6,6 +6,7 @@ backend/src/
   middlewares/   cross-cutting Express middleware
   modules/       feature modules (controller, routes, service, repository, validator, model, tests)
   routes/        API version composition
+  seeds/         deterministic, idempotent reference-data seeding
   utils/         shared errors and logging
 frontend/src/
   api/           HTTP client
