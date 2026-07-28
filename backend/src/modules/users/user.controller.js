@@ -42,6 +42,11 @@ export class UserController {
     res.status(204).send();
   };
 
+  assignRoles = async (req, res) => {
+    const result = await this.service.assignRoles(req.params.userId, req.body.roles ?? [], req.auth.sub);
+    res.status(200).json({ data: result });
+  };
+
   getLoginHistory = async (req, res) => {
     const result = await this.service.getLoginHistory(req.params.userId);
     res.status(200).json({ data: result });

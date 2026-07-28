@@ -8,6 +8,7 @@ import { ForgotPasswordPage } from './pages/ForgotPasswordPage.jsx';
 import { HomePage } from './pages/HomePage.jsx';
 import { LoginPage } from './pages/LoginPage.jsx';
 import { ProfilePage } from './pages/ProfilePage.jsx';
+import { RbacPage } from './pages/RbacPage.jsx';
 import { RegisterPage } from './pages/RegisterPage.jsx';
 import { ResetPasswordPage } from './pages/ResetPasswordPage.jsx';
 import { UsersPage } from './pages/UsersPage.jsx';
@@ -62,6 +63,14 @@ function AppShell() {
               element={
                 <AppLayout mode={mode} toggleMode={toggleMode}>
                   <UsersPage />
+                </AppLayout>
+              }
+            />
+            <Route
+              path="/rbac"
+              element={
+                <AppLayout mode={mode} toggleMode={toggleMode}>
+                  <RbacPage />
                 </AppLayout>
               }
             />

@@ -126,6 +126,23 @@ export class UserService {
     });
   }
 
+  async assignRoles(userId, roleIds, actorId) {
+    const target = await this.users.findById(userId);
+    if (!target || target.isDeleted) {
+      throw new ApiError(404, 'User not found', undefined, 'USER_NOT_FOUND');
+    }
+
+    const updated = await this.users.updateById(userId, { roles: roleIds });
+    await this.auditLogs.create({
+      actor: actorId,
+      action: 'user.roles.updated',
+      resource: 'users',
+      targetId: userId,
+      metadata: { roles: roleIds }
+    });
+    return { user: this.toUser(updated) };
+  }
+
   async changePassword(userId, currentPassword, password) {
     const user = await this.users.findById(userId, '+passwordHash');
     if (!user || user.isDeleted) {

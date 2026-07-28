@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 export function AppLayout({ children, mode, toggleMode }) {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const canManageRbac = (user?.roles ?? []).some((role) => ['ADMIN', 'SUPER_ADMIN'].includes(role));
   const { data: health } = useQuery({
     queryKey: ['health'],
     queryFn: getHealthStatus,
@@ -35,6 +36,11 @@ export function AppLayout({ children, mode, toggleMode }) {
             <Button component={RouterLink} to="/users" color="inherit">
               Users
             </Button>
+            {canManageRbac ? (
+              <Button component={RouterLink} to="/rbac" color="inherit">
+                RBAC
+              </Button>
+            ) : null}
             <Button color="inherit" onClick={toggleMode}>
               {mode === 'light' ? 'Dark mode' : 'Light mode'}
             </Button>

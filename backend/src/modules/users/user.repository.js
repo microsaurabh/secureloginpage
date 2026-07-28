@@ -12,7 +12,10 @@ export class UserRepository extends BaseRepository {
   }
 
   findByIdWithRoles(id) {
-    return this.model.findById(id).populate('roles');
+    return this.model.findById(id).populate({
+      path: 'roles',
+      populate: { path: 'permissions' }
+    });
   }
 
   findByVerificationHash(tokenHash) {
