@@ -2,7 +2,7 @@ import { ApiError } from './api-error.js';
 
 export function assertPasswordPolicy(password) {
   const failures = [];
-  if (typeof password !== 'string' || password.length < 12) failures.push('at least 12 characters');
+  if (typeof password !== 'string' || password.length < 8) failures.push('at least 8 characters');
   if (!/[a-z]/.test(password)) failures.push('a lowercase letter');
   if (!/[A-Z]/.test(password)) failures.push('an uppercase letter');
   if (!/\d/.test(password)) failures.push('a number');

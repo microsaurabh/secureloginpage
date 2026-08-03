@@ -1,7 +1,7 @@
 import { body } from 'express-validator';
 import { validateRequest } from '../../middlewares/validate-request.js';
 
-const password = body('password').isString().trim().isLength({ min: 12, max: 128 });
+const password = body('password').isString().trim().isLength({ min: 8, max: 128 });
 export const registerValidator = [
   body('firstName').trim().isLength({ min: 1, max: 100 }),
   body('lastName').trim().isLength({ min: 1, max: 100 }),

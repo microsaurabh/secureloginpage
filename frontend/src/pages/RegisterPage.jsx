@@ -76,7 +76,13 @@ export function RegisterPage() {
                 fullWidth
                 {...register('password', {
                   required: 'Password is required',
-                  minLength: { value: 8, message: 'At least 8 characters' }
+                  minLength: { value: 8, message: 'Use at least 8 characters' },
+                  validate: (value) =>
+                    (/[a-z]/.test(value) &&
+                      /[A-Z]/.test(value) &&
+                      /\d/.test(value) &&
+                      /[^A-Za-z0-9]/.test(value)) ||
+                    'Include uppercase, lowercase, a number, and a special character'
                 })}
                 error={Boolean(errors.password)}
                 helperText={errors.password?.message}

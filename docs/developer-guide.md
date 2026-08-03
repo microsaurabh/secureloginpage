@@ -10,6 +10,8 @@ Backend features own their model, repository, service, controller, routes, valid
 
 Use access tokens in the `Authorization` header. Refresh tokens remain HttpOnly cookies and are protected with a double-submit CSRF token. The Axios client requests that token automatically for state-changing calls.
 
+For local testing, set `EMAIL_TRANSPORT=console` to avoid sending real email. The generated verification and reset message is written to the API log. Production must use the SMTP transport and real credentials.
+
 ## Quality gate
 
 Before submitting a change, run `npm run format:check`, `npm run lint`, `npm test`, and `npm run build`. Add focused tests for new validation, service behavior, and routes.

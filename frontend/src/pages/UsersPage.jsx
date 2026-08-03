@@ -7,6 +7,7 @@ import {
   Pagination,
   Stack,
   Table,
+  TableContainer,
   TableBody,
   TableCell,
   TableHead,
@@ -63,36 +64,38 @@ export function UsersPage() {
     if (error) return <Alert severity="error">{error}</Alert>;
     if (!users.length) return <Typography color="text.secondary">No users found.</Typography>;
     return (
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {users.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell>{`${user.firstName ?? ''} ${user.lastName ?? ''}`.trim()}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>
-                <Chip
-                  label={user.status ?? 'active'}
-                  color={user.status === 'active' ? 'success' : 'default'}
-                  variant="outlined"
-                />
-              </TableCell>
+      <TableContainer sx={{ overflowX: 'auto' }}>
+        <Table size="small" sx={{ minWidth: 520 }}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Status</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {users.map((user) => (
+              <TableRow key={user.id}>
+                <TableCell>{`${user.firstName ?? ''} ${user.lastName ?? ''}`.trim()}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>
+                  <Chip
+                    label={user.status ?? 'active'}
+                    color={user.status === 'active' ? 'success' : 'default'}
+                    variant="outlined"
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     );
   }, [error, loading, users]);
 
   return (
-    <Card>
-      <CardContent>
+    <Card sx={{ overflow: 'hidden' }}>
+      <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
         <Stack spacing={3}>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
@@ -106,6 +109,7 @@ export function UsersPage() {
               size="small"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
+              sx={{ width: { xs: '100%', sm: 280 } }}
             />
           </Stack>
           {content}

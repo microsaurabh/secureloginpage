@@ -156,7 +156,7 @@ export function RbacPage() {
     <Stack spacing={3}>
       <Paper
         sx={{
-          p: 3,
+          p: { xs: 2, sm: 3 },
           background: (theme) => alpha(theme.palette.primary.main, 0.06),
           border: '1px solid',
           borderColor: 'divider'
@@ -180,7 +180,7 @@ export function RbacPage() {
         </Stack>
       </Paper>
 
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         <Stack spacing={2}>
           <Typography variant="h6">Create a role</Typography>
           <TextField
@@ -206,7 +206,7 @@ export function RbacPage() {
         </Stack>
       </Paper>
 
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         <Stack spacing={2}>
           <Typography variant="h6">Create a permission</Typography>
           <TextField
@@ -237,7 +237,7 @@ export function RbacPage() {
         </Stack>
       </Paper>
 
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         <Stack spacing={2}>
           <Typography variant="h6">Assign roles to users</Typography>
           <Typography color="text.secondary">
@@ -308,7 +308,7 @@ export function RbacPage() {
         </Stack>
       </Paper>
 
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         <Stack spacing={2}>
           <Typography variant="h6">Assign permissions to roles</Typography>
           <Typography color="text.secondary">
@@ -377,7 +377,7 @@ export function RbacPage() {
         </Stack>
       </Paper>
 
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         <Typography variant="h6">Current roles</Typography>
         {rolesLoading ? (
           <CircularProgress size={20} />
@@ -403,7 +403,7 @@ export function RbacPage() {
         )}
       </Paper>
 
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         <Typography variant="h6">Current permissions</Typography>
         {permissionsLoading ? (
           <CircularProgress size={20} />
