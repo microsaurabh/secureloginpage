@@ -35,7 +35,9 @@ export class UserService {
 
     const allowedFields = ['firstName', 'lastName', 'avatarUrl'];
     const update = Object.fromEntries(
-      Object.entries(data).filter(([key, value]) => allowedFields.includes(key) && value !== undefined)
+      Object.entries(data).filter(
+        ([key, value]) => allowedFields.includes(key) && value !== undefined
+      )
     );
 
     if (Object.keys(update).length === 0) {
@@ -46,7 +48,14 @@ export class UserService {
     return { user: this.toUser(updated) };
   }
 
-  async listUsers({ page = 1, limit = 20, search = '', status, sortBy = 'createdAt', sortOrder = 'desc' }) {
+  async listUsers({
+    page = 1,
+    limit = 20,
+    search = '',
+    status,
+    sortBy = 'createdAt',
+    sortOrder = 'desc'
+  }) {
     const query = { isDeleted: false };
     if (status) query.status = status;
     if (search) {
@@ -58,7 +67,7 @@ export class UserService {
     }
 
     const [items, total] = await Promise.all([
-      this.users.find(query, {
+      this.users.findPage(query, {
         skip: (page - 1) * limit,
         limit,
         sort: { [sortBy]: sortOrder === 'asc' ? 1 : -1 }
@@ -149,7 +158,12 @@ export class UserService {
       throw new ApiError(404, 'User not found', undefined, 'USER_NOT_FOUND');
     }
     if (!(await bcrypt.compare(currentPassword, user.passwordHash))) {
-      throw new ApiError(400, 'Current password is incorrect', undefined, 'CURRENT_PASSWORD_INCORRECT');
+      throw new ApiError(
+        400,
+        'Current password is incorrect',
+        undefined,
+        'CURRENT_PASSWORD_INCORRECT'
+      );
     }
     await this.users.updateById(userId, { passwordHash: await bcrypt.hash(password, 12) });
     await this.refreshTokens.revokeForUser(userId);

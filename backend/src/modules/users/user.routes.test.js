@@ -21,7 +21,9 @@ function buildApp(service) {
 describe('user routes', () => {
   it('returns the current profile', async () => {
     const service = {
-      getUserProfile: jest.fn().mockResolvedValue({ user: { id: 'user-1', email: 'ada@example.com' } })
+      getUserProfile: jest
+        .fn()
+        .mockResolvedValue({ user: { id: 'user-1', email: 'ada@example.com' } })
     };
     const response = await request(buildApp(service)).get('/api/v1/users/me').expect(200);
     expect(response.body.data.user.email).toBe('ada@example.com');

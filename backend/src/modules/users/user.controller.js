@@ -28,7 +28,11 @@ export class UserController {
   };
 
   setStatus = async (req, res) => {
-    const result = await this.service.setUserStatus(req.params.userId, req.body.status, req.auth.sub);
+    const result = await this.service.setUserStatus(
+      req.params.userId,
+      req.body.status,
+      req.auth.sub
+    );
     res.status(200).json({ data: result });
   };
 
@@ -43,7 +47,11 @@ export class UserController {
   };
 
   assignRoles = async (req, res) => {
-    const result = await this.service.assignRoles(req.params.userId, req.body.roles ?? [], req.auth.sub);
+    const result = await this.service.assignRoles(
+      req.params.userId,
+      req.body.roles ?? [],
+      req.auth.sub
+    );
     res.status(200).json({ data: result });
   };
 

@@ -1,4 +1,19 @@
-import { Alert, Box, Card, CardContent, Chip, Pagination, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Card,
+  CardContent,
+  Chip,
+  Pagination,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography
+} from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { apiClient } from '../api/client.js';
@@ -62,7 +77,11 @@ export function UsersPage() {
               <TableCell>{`${user.firstName ?? ''} ${user.lastName ?? ''}`.trim()}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>
-                <Chip label={user.status ?? 'active'} color={user.status === 'active' ? 'success' : 'default'} variant="outlined" />
+                <Chip
+                  label={user.status ?? 'active'}
+                  color={user.status === 'active' ? 'success' : 'default'}
+                  variant="outlined"
+                />
               </TableCell>
             </TableRow>
           ))}
@@ -75,13 +94,27 @@ export function UsersPage() {
     <Card>
       <CardContent>
         <Stack spacing={3}>
-          <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} spacing={2}>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            justifyContent="space-between"
+            alignItems={{ xs: 'flex-start', sm: 'center' }}
+            spacing={2}
+          >
             <Typography variant="h5">Users</Typography>
-            <TextField label="Search users" size="small" value={search} onChange={(event) => setSearch(event.target.value)} />
+            <TextField
+              label="Search users"
+              size="small"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+            />
           </Stack>
           {content}
           <Box display="flex" justifyContent="flex-end">
-            <Pagination count={totalPages} page={page - 1} onChange={(_event, value) => setPage(value)} />
+            <Pagination
+              count={totalPages}
+              page={page - 1}
+              onChange={(_event, value) => setPage(value)}
+            />
           </Box>
         </Stack>
       </CardContent>

@@ -21,7 +21,12 @@ export function AppLayout({ children, mode, toggleMode }) {
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-      <AppBar position="sticky" color="transparent" elevation={0} sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <AppBar
+        position="sticky"
+        color="transparent"
+        elevation={0}
+        sx={{ borderBottom: 1, borderColor: 'divider' }}
+      >
         <Toolbar>
           <Typography component="h1" variant="h6" sx={{ flexGrow: 1 }}>
             Secure Login Portal
@@ -51,12 +56,22 @@ export function AppLayout({ children, mode, toggleMode }) {
         </Toolbar>
       </AppBar>
       <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} sx={{ mb: 3 }}>
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={2}
+          justifyContent="space-between"
+          alignItems={{ xs: 'flex-start', sm: 'center' }}
+          sx={{ mb: 3 }}
+        >
           <Stack spacing={0.5}>
             <Typography variant="h4">Welcome back</Typography>
             <Typography color="text.secondary">{user?.email ?? 'Authenticated user'}</Typography>
           </Stack>
-          <Chip label={health?.status ?? 'Checking service status'} color="success" variant="outlined" />
+          <Chip
+            label={health?.status ?? 'Checking service status'}
+            color="success"
+            variant="outlined"
+          />
         </Stack>
         {children}
       </Container>

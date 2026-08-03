@@ -11,8 +11,14 @@ const server = await connectDatabase().then(() =>
 
 async function shutdown(signal) {
   logger.info(`${signal} received; shutting down`);
+  const forcedExit = setTimeout(() => {
+    logger.error('Graceful shutdown timed out; forcing exit');
+    process.exit(1);
+  }, env.shutdownTimeoutMs);
+  forcedExit.unref();
   server.close(async () => {
     await disconnectDatabase();
+    clearTimeout(forcedExit);
     process.exit(0);
   });
 }

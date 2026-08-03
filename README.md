@@ -10,6 +10,8 @@ Secure Login Portal is a production-oriented authentication platform built with 
 - Repository-service-controller architecture for feature modules
 - OpenAPI documentation at `/api-docs`
 - RBAC-ready middleware and audit/login-history support
+- CSRF protection, request IDs, structured timing logs, liveness/readiness checks, and protected metrics
+- Docker Compose, Nginx proxy, PM2 configuration, and backup/restore deployment tooling
 
 ## Quick start
 
@@ -60,4 +62,4 @@ npm run build
 
 ## Documentation
 
-See [architecture](docs/architecture.md), [development](docs/development.md), [database design](docs/database.md), [API](docs/api.md), [coding standards](docs/coding-standards.md), and [folder structure](docs/folder-structure.md).
+See [architecture](docs/architecture.md), [development](docs/development.md), [developer guide](docs/developer-guide.md), [deployment guide](docs/deployment.md), [database design](docs/database.md), [API](docs/api.md), [coding standards](docs/coding-standards.md), [folder structure](docs/folder-structure.md), [release notes](docs/release-notes.md), and the [production readiness checklist](docs/production-readiness.md).

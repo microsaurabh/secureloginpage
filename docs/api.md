@@ -31,6 +31,8 @@ Error responses use:
 
 `GET /api/v1/health` returns a 200 response containing the service name, status, and ISO-8601 timestamp. It requires no authentication because it is intended for load balancers and orchestrators.
 
+`GET /api/v1/health/ready` verifies that MongoDB is connected and returns 503 while the application is not ready to serve traffic. `GET /api/v1/csrf-token` issues the double-submit token used by cookie-session endpoints. `GET /api/v1/metrics` requires an administrator access token.
+
 ## Authentication
 
 `POST /api/v1/auth/register` creates an account and sends an email verification message.

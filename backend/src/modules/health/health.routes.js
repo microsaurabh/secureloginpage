@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getHealth } from './health.controller.js';
+import { getHealth, getReadiness } from './health.controller.js';
 
 export const healthRouter = Router();
 
@@ -14,3 +14,4 @@ export const healthRouter = Router();
  *         description: API is available
  */
 healthRouter.get('/', getHealth);
+healthRouter.get('/ready', getReadiness);

@@ -40,9 +40,36 @@ export function ProfilePage() {
           {success && <Alert severity="success">Password updated successfully.</Alert>}
           <Box component="form" onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
-              <TextField label="Current password" type="password" fullWidth {...register('currentPassword', { required: 'Current password is required' })} error={Boolean(errors.currentPassword)} helperText={errors.currentPassword?.message} />
-              <TextField label="New password" type="password" fullWidth {...register('password', { required: 'New password is required', minLength: { value: 8, message: 'At least 8 characters' } })} error={Boolean(errors.password)} helperText={errors.password?.message} />
-              <TextField label="Confirm password" type="password" fullWidth {...register('confirmPassword', { required: 'Please confirm your password', validate: (value) => value === password || 'Passwords do not match' })} error={Boolean(errors.confirmPassword)} helperText={errors.confirmPassword?.message} />
+              <TextField
+                label="Current password"
+                type="password"
+                fullWidth
+                {...register('currentPassword', { required: 'Current password is required' })}
+                error={Boolean(errors.currentPassword)}
+                helperText={errors.currentPassword?.message}
+              />
+              <TextField
+                label="New password"
+                type="password"
+                fullWidth
+                {...register('password', {
+                  required: 'New password is required',
+                  minLength: { value: 8, message: 'At least 8 characters' }
+                })}
+                error={Boolean(errors.password)}
+                helperText={errors.password?.message}
+              />
+              <TextField
+                label="Confirm password"
+                type="password"
+                fullWidth
+                {...register('confirmPassword', {
+                  required: 'Please confirm your password',
+                  validate: (value) => value === password || 'Passwords do not match'
+                })}
+                error={Boolean(errors.confirmPassword)}
+                helperText={errors.confirmPassword?.message}
+              />
               <Button type="submit" variant="contained" disabled={isSubmitting}>
                 {isSubmitting ? 'Updating…' : 'Update password'}
               </Button>

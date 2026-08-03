@@ -24,7 +24,11 @@ function AppShell() {
     () =>
       createTheme({
         ...baseTheme,
-        palette: { ...baseTheme.palette, mode: paletteMode, background: { default: paletteMode === 'light' ? '#f6f8fb' : '#121212' } }
+        palette: {
+          ...baseTheme.palette,
+          mode: paletteMode,
+          background: { default: paletteMode === 'light' ? '#f6f8fb' : '#121212' }
+        }
       }),
     [paletteMode]
   );
@@ -36,11 +40,28 @@ function AppShell() {
       <CssBaseline />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <HomePage />} />
-          <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />} />
-          <Route path="/register" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <RegisterPage />} />
-          <Route path="/forgot-password" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <ForgotPasswordPage />} />
-          <Route path="/reset-password" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <ResetPasswordPage />} />
+          <Route
+            path="/"
+            element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <HomePage />}
+          />
+          <Route
+            path="/login"
+            element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />}
+          />
+          <Route
+            path="/register"
+            element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <RegisterPage />}
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              isAuthenticated ? <Navigate to="/dashboard" replace /> : <ForgotPasswordPage />
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <ResetPasswordPage />}
+          />
           <Route element={<ProtectedRoute />}>
             <Route
               path="/dashboard"
@@ -75,7 +96,10 @@ function AppShell() {
               }
             />
           </Route>
-          <Route path="*" element={<Navigate to={isAuthenticated ? '/dashboard' : '/'} replace />} />
+          <Route
+            path="*"
+            element={<Navigate to={isAuthenticated ? '/dashboard' : '/'} replace />}
+          />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

@@ -4,16 +4,25 @@ services:
     restart: unless-stopped
     ports: ['27017:27017']
     volumes: [mongo-data:/data/db]
+    healthcheck:
+      test: ['CMD', 'mongosh', '--quiet', '--eval', 'db.runCommand({ ping: 1 }).ok']
+      interval: 10s
+      timeout: 5s
+      retries: 5
   api:
     build: { context: .., dockerfile: docker/backend.Dockerfile }
     env_file: ../backend/.env
     environment:
       MONGODB_URI: mongodb://mongo:27017/secure-login-portal
-    depends_on: [mongo]
+    depends_on:
+      mongo:
+        condition: service_healthy
     ports: ['3000:3000']
   web:
     build: { context: .., dockerfile: docker/frontend.Dockerfile }
-    depends_on: [api]
+    depends_on:
+      api:
+        condition: service_healthy
     ports: ['8080:80']
 volumes:
   mongo-data:

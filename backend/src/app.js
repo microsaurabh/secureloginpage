@@ -10,12 +10,16 @@ import { swaggerDocument } from './config/swagger.js';
 import { apiRouter } from './routes/index.js';
 import { errorHandler, notFoundHandler } from './middlewares/error-handler.js';
 import { logger } from './utils/logger.js';
+import { rejectMongoOperators } from './middlewares/input-security.js';
+import { requestContext } from './middlewares/request-context.js';
 import swaggerUi from 'swagger-ui-express';
 
 export function createApp() {
   const app = express();
   app.disable('x-powered-by');
-  app.use(helmet());
+  app.set('trust proxy', 1);
+  app.use(helmet({ crossOriginResourcePolicy: { policy: 'same-site' } }));
+  app.use(requestContext);
   app.use(cors({ origin: env.clientOrigin, credentials: true }));
   app.use(compression());
   app.use(
@@ -34,6 +38,7 @@ export function createApp() {
   app.use(express.json({ limit: '10kb' }));
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
+  app.use(rejectMongoOperators);
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }));
   app.use('/api/v1', apiRouter);
   app.use(notFoundHandler);

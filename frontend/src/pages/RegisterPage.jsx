@@ -13,7 +13,9 @@ export function RegisterPage() {
     handleSubmit,
     watch,
     formState: { errors, isSubmitting }
-  } = useForm({ defaultValues: { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' } });
+  } = useForm({
+    defaultValues: { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' }
+  });
 
   const password = watch('password');
 
@@ -45,18 +47,59 @@ export function RegisterPage() {
           <Box component="form" onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                <TextField label="First name" fullWidth {...register('firstName', { required: 'First name is required' })} error={Boolean(errors.firstName)} helperText={errors.firstName?.message} />
-                <TextField label="Last name" fullWidth {...register('lastName', { required: 'Last name is required' })} error={Boolean(errors.lastName)} helperText={errors.lastName?.message} />
+                <TextField
+                  label="First name"
+                  fullWidth
+                  {...register('firstName', { required: 'First name is required' })}
+                  error={Boolean(errors.firstName)}
+                  helperText={errors.firstName?.message}
+                />
+                <TextField
+                  label="Last name"
+                  fullWidth
+                  {...register('lastName', { required: 'Last name is required' })}
+                  error={Boolean(errors.lastName)}
+                  helperText={errors.lastName?.message}
+                />
               </Stack>
-              <TextField label="Email" type="email" fullWidth {...register('email', { required: 'Email is required' })} error={Boolean(errors.email)} helperText={errors.email?.message} />
-              <TextField label="Password" type="password" fullWidth {...register('password', { required: 'Password is required', minLength: { value: 8, message: 'At least 8 characters' } })} error={Boolean(errors.password)} helperText={errors.password?.message} />
-              <TextField label="Confirm password" type="password" fullWidth {...register('confirmPassword', { required: 'Please confirm your password', validate: (value) => value === password || 'Passwords do not match' })} error={Boolean(errors.confirmPassword)} helperText={errors.confirmPassword?.message} />
+              <TextField
+                label="Email"
+                type="email"
+                fullWidth
+                {...register('email', { required: 'Email is required' })}
+                error={Boolean(errors.email)}
+                helperText={errors.email?.message}
+              />
+              <TextField
+                label="Password"
+                type="password"
+                fullWidth
+                {...register('password', {
+                  required: 'Password is required',
+                  minLength: { value: 8, message: 'At least 8 characters' }
+                })}
+                error={Boolean(errors.password)}
+                helperText={errors.password?.message}
+              />
+              <TextField
+                label="Confirm password"
+                type="password"
+                fullWidth
+                {...register('confirmPassword', {
+                  required: 'Please confirm your password',
+                  validate: (value) => value === password || 'Passwords do not match'
+                })}
+                error={Boolean(errors.confirmPassword)}
+                helperText={errors.confirmPassword?.message}
+              />
               <Button type="submit" variant="contained" size="large" disabled={isSubmitting}>
                 {isSubmitting ? 'Creating account…' : 'Create account'}
               </Button>
             </Stack>
           </Box>
-          <Button component={RouterLink} to="/login">Back to sign in</Button>
+          <Button component={RouterLink} to="/login">
+            Back to sign in
+          </Button>
         </Stack>
       </Paper>
     </Box>

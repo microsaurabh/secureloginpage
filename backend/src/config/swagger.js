@@ -51,6 +51,28 @@ export const swaggerDocument = swaggerJsdoc({
           }
         }
       },
+      '/csrf-token': {
+        get: {
+          tags: ['System'],
+          summary: 'Issue a CSRF token for cookie-backed session requests',
+          responses: { 200: { description: 'CSRF token issued' } }
+        }
+      },
+      '/health/ready': {
+        get: {
+          tags: ['System'],
+          summary: 'Return database readiness',
+          responses: { 200: { description: 'Ready' }, 503: { description: 'Not ready' } }
+        }
+      },
+      '/metrics': {
+        get: {
+          tags: ['System'],
+          summary: 'Return protected application counters',
+          security: [{ bearerAuth: [] }],
+          responses: { 200: { description: 'Metrics snapshot' } }
+        }
+      },
       '/auth/logout': {
         post: {
           tags: ['Authentication'],

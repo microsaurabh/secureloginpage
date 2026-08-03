@@ -12,8 +12,8 @@ export function HomePage() {
             Secure Login Portal
           </Typography>
           <Typography color="text.secondary" variant="body1">
-            A production-oriented authentication platform with versioned APIs, secure sessions,
-            and role-aware access controls.
+            A production-oriented authentication platform with versioned APIs, secure sessions, and
+            role-aware access controls.
           </Typography>
           <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
             {capabilities.map((capability) => (

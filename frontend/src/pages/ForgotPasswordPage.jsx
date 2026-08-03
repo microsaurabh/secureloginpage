@@ -31,19 +31,34 @@ export function ForgotPasswordPage() {
         <Stack spacing={3}>
           <Stack spacing={1}>
             <Typography variant="h4">Reset password</Typography>
-            <Typography color="text.secondary">Enter the email associated with your account.</Typography>
+            <Typography color="text.secondary">
+              Enter the email associated with your account.
+            </Typography>
           </Stack>
           {(error || formError) && <Alert severity="error">{error ?? formError}</Alert>}
-          {submitted && <Alert severity="success">If the account exists, reset instructions have been sent.</Alert>}
+          {submitted && (
+            <Alert severity="success">
+              If the account exists, reset instructions have been sent.
+            </Alert>
+          )}
           <Box component="form" onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
-              <TextField label="Email" type="email" fullWidth {...register('email', { required: 'Email is required' })} error={Boolean(errors.email)} helperText={errors.email?.message} />
+              <TextField
+                label="Email"
+                type="email"
+                fullWidth
+                {...register('email', { required: 'Email is required' })}
+                error={Boolean(errors.email)}
+                helperText={errors.email?.message}
+              />
               <Button type="submit" variant="contained" size="large" disabled={isSubmitting}>
                 {isSubmitting ? 'Sending…' : 'Send reset link'}
               </Button>
             </Stack>
           </Box>
-          <Button component={RouterLink} to="/login">Back to sign in</Button>
+          <Button component={RouterLink} to="/login">
+            Back to sign in
+          </Button>
         </Stack>
       </Paper>
     </Box>

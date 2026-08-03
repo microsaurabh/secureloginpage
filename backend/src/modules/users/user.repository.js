@@ -18,6 +18,16 @@ export class UserRepository extends BaseRepository {
     });
   }
 
+  findPage(filter, { skip, limit, sort }) {
+    return this.model
+      .find(filter)
+      .select('firstName lastName email roles status avatarUrl createdAt')
+      .sort(sort)
+      .skip(skip)
+      .limit(limit)
+      .lean();
+  }
+
   findByVerificationHash(tokenHash) {
     return this.model
       .findOne({

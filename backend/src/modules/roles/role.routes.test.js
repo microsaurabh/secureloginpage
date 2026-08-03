@@ -19,7 +19,11 @@ describe('role routes', () => {
 
     await controller.assignPermissions(req, res, next);
 
-    expect(service.addPermissionsToRole).toHaveBeenCalledWith('507f1f77bcf86cd799439011', ['manage:users'], 'user-1');
+    expect(service.addPermissionsToRole).toHaveBeenCalledWith(
+      '507f1f77bcf86cd799439011',
+      ['manage:users'],
+      'user-1'
+    );
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ data: expect.any(Object) }));
   });

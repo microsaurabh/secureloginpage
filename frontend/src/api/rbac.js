@@ -42,15 +42,23 @@ export async function getUsers(accessToken) {
 }
 
 export async function assignUserRoles(userId, roleIds, accessToken) {
-  const { data } = await apiClient.post(`/users/${userId}/roles`, { roles: roleIds }, {
-    headers: { Authorization: `Bearer ${accessToken}` }
-  });
+  const { data } = await apiClient.post(
+    `/users/${userId}/roles`,
+    { roles: roleIds },
+    {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    }
+  );
   return data.data;
 }
 
 export async function assignRolePermissions(roleId, permissionIds, accessToken) {
-  const { data } = await apiClient.post(`/roles/${roleId}/permissions`, { permissions: permissionIds }, {
-    headers: { Authorization: `Bearer ${accessToken}` }
-  });
+  const { data } = await apiClient.post(
+    `/roles/${roleId}/permissions`,
+    { permissions: permissionIds },
+    {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    }
+  );
   return data.data;
 }

@@ -26,5 +26,8 @@ export const env = {
   smtpPort: Number(process.env.SMTP_PORT ?? 587),
   smtpUser: process.env.SMTP_USER,
   smtpPassword: process.env.SMTP_PASSWORD,
-  emailFrom: process.env.EMAIL_FROM
+  emailFrom: process.env.EMAIL_FROM,
+  mongoMaxPoolSize: Number(process.env.MONGO_MAX_POOL_SIZE ?? 20),
+  mongoMinPoolSize: Number(process.env.MONGO_MIN_POOL_SIZE ?? 2),
+  shutdownTimeoutMs: Number(process.env.SHUTDOWN_TIMEOUT_MS ?? 10000)
 };

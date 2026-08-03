@@ -17,7 +17,10 @@
     "lint": "npm run lint -w backend && npm run lint -w frontend",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "npm run test -w backend && npm run test -w frontend"
+    "test": "npm run test -w backend && npm run test -w frontend",
+    "backup": "powershell -ExecutionPolicy Bypass -File scripts/backup.ps1",
+    "restore": "powershell -ExecutionPolicy Bypass -File scripts/restore.ps1",
+    "deploy": "powershell -ExecutionPolicy Bypass -File scripts/deploy.ps1"
   },
   "devDependencies": {
     "concurrently": "^9.1.2",

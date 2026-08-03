@@ -33,21 +33,27 @@ export const requireRoles =
     next();
   };
 
-export const authorize = (requiredPermissions = []) => (req, _res, next) => {
-  if (!req.auth) {
-    return next(new ApiError(401, 'Authentication is required', undefined, 'AUTHENTICATION_REQUIRED'));
-  }
+export const authorize =
+  (requiredPermissions = []) =>
+  (req, _res, next) => {
+    if (!req.auth) {
+      return next(
+        new ApiError(401, 'Authentication is required', undefined, 'AUTHENTICATION_REQUIRED')
+      );
+    }
 
-  const permissions = Array.isArray(requiredPermissions) ? requiredPermissions : [requiredPermissions];
-  const hasAdminRole = req.auth.roles?.some((role) => ['ADMIN', 'SUPER_ADMIN'].includes(role));
-  const userPermissions = req.auth.permissions ?? [];
-  const hasPermissions = permissions.every(
-    (permission) => hasAdminRole || userPermissions.includes(permission)
-  );
+    const permissions = Array.isArray(requiredPermissions)
+      ? requiredPermissions
+      : [requiredPermissions];
+    const hasAdminRole = req.auth.roles?.some((role) => ['ADMIN', 'SUPER_ADMIN'].includes(role));
+    const userPermissions = req.auth.permissions ?? [];
+    const hasPermissions = permissions.every(
+      (permission) => hasAdminRole || userPermissions.includes(permission)
+    );
 
-  if (!hasPermissions) {
-    return next(new ApiError(403, 'Insufficient permissions', undefined, 'AUTHORIZATION_DENIED'));
-  }
+    if (!hasPermissions) {
+      return next(new ApiError(403, 'Insufficient permissions', undefined, 'AUTHORIZATION_DENIED'));
+    }
 
-  next();
-};
+    next();
+  };

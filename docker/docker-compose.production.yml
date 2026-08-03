@@ -1,0 +1,10 @@
+services:
+  mongo:
+    restart: unless-stopped
+    ports: []
+  api:
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+  web:
+    restart: unless-stopped

@@ -6,6 +6,8 @@ export const listUsersValidator = [
   query('limit').optional().isInt({ min: 1, max: 100 }).toInt(),
   query('search').optional().isString().trim().escape(),
   query('status').optional().isIn(['active', 'inactive', 'locked']).withMessage('Invalid status'),
+  query('sortBy').optional().isIn(['createdAt', 'email', 'firstName', 'lastName', 'status']),
+  query('sortOrder').optional().isIn(['asc', 'desc']),
   validateRequest
 ];
 

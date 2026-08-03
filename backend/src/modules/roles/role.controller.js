@@ -40,7 +40,11 @@ export function createRoleController(service = new RoleService()) {
 
     assignPermissions: async (req, res, next) => {
       try {
-        const result = await service.addPermissionsToRole(req.params.id, req.body.permissions ?? [], req.auth?.sub);
+        const result = await service.addPermissionsToRole(
+          req.params.id,
+          req.body.permissions ?? [],
+          req.auth?.sub
+        );
         res.status(200).json({ data: result });
       } catch (error) {
         next(error);

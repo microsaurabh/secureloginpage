@@ -1,9 +1,18 @@
 import { Card, CardContent, Grid, Stack, Typography } from '@mui/material';
 
 const overviewCards = [
-  { title: 'Authentication status', description: 'Secure sessions and refresh rotation are enabled.' },
-  { title: 'Access control', description: 'Protected routes require authentication and role-aware checks.' },
-  { title: 'Operational readiness', description: 'The platform exposes health and API documentation endpoints.' }
+  {
+    title: 'Authentication status',
+    description: 'Secure sessions and refresh rotation are enabled.'
+  },
+  {
+    title: 'Access control',
+    description: 'Protected routes require authentication and role-aware checks.'
+  },
+  {
+    title: 'Operational readiness',
+    description: 'The platform exposes health and API documentation endpoints.'
+  }
 ];
 
 export function DashboardPage() {

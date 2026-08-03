@@ -31,7 +31,9 @@ export function LoginPage() {
         <Stack spacing={3}>
           <Stack spacing={1}>
             <Typography variant="h4">Sign in</Typography>
-            <Typography color="text.secondary">Access the Secure Login Portal dashboard securely.</Typography>
+            <Typography color="text.secondary">
+              Access the Secure Login Portal dashboard securely.
+            </Typography>
           </Stack>
           {(error || formError) && <Alert severity="error">{error ?? formError}</Alert>}
           <Box component="form" onSubmit={handleSubmit(onSubmit)}>
