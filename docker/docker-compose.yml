@@ -11,18 +11,38 @@ services:
       retries: 5
   api:
     build: { context: .., dockerfile: docker/backend.Dockerfile }
-    env_file: ../backend/.env
     environment:
       MONGODB_URI: mongodb://mongo:27017/secure-login-portal
+      NODE_ENV: development
+      PORT: 3000
+      CLIENT_ORIGIN: http://localhost:8080
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-local-development-access-secret-change-before-production}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-local-development-refresh-secret-change-before-production}
+      SMTP_HOST: mailpit
+      SMTP_PORT: 1025
+      EMAIL_FROM: no-reply@secure-portal.local
+      EMAIL_TRANSPORT: smtp
     depends_on:
       mongo:
         condition: service_healthy
     ports: ['3000:3000']
+  seed:
+    build: { context: .., dockerfile: docker/backend.Dockerfile }
+    command: node src/seeds/seed-default-roles.js
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/secure-login-portal
+      NODE_ENV: development
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: 'no'
+  mailpit:
+    image: axllent/mailpit:v1.21
+    restart: unless-stopped
+    ports: ['8025:8025']
   web:
     build: { context: .., dockerfile: docker/frontend.Dockerfile }
-    depends_on:
-      api:
-        condition: service_healthy
+    depends_on: [api]
     ports: ['8080:80']
 volumes:
   mongo-data:

@@ -22,7 +22,7 @@ export class EmailService {
       this.transport = nodemailer.createTransport({ jsonTransport: true });
       return this.transport;
     }
-    if (!env.smtpHost || !env.smtpUser || !env.smtpPassword || !env.emailFrom) {
+    if (!env.smtpHost || !env.emailFrom) {
       throw new ApiError(
         503,
         'Email delivery is not configured',
@@ -34,7 +34,9 @@ export class EmailService {
       host: env.smtpHost,
       port: env.smtpPort,
       secure: env.smtpPort === 465,
-      auth: { user: env.smtpUser, pass: env.smtpPassword }
+      ...(env.smtpUser && env.smtpPassword
+        ? { auth: { user: env.smtpUser, pass: env.smtpPassword } }
+        : {})
     });
     return this.transport;
   }

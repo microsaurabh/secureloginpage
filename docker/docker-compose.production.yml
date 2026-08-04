@@ -6,5 +6,10 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
+      CLIENT_ORIGIN: ${CLIENT_ORIGIN:?Set CLIENT_ORIGIN in the deployment environment}
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?Set JWT_ACCESS_SECRET in the deployment environment}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?Set JWT_REFRESH_SECRET in the deployment environment}
+  mailpit:
+    profiles: ['development']
   web:
     restart: unless-stopped

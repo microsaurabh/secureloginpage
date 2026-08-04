@@ -28,20 +28,20 @@ cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env
 ```
 
-3. Start MongoDB and the application:
+3. Start the complete local stack (MongoDB, API, web app, email inbox, and RBAC seed job):
 
 ```bash
-docker compose -f docker/docker-compose.yml up -d mongo
-npm run dev
+docker compose -f docker/docker-compose.yml up --build
 ```
 
-- Frontend: http://localhost:5173
+- Frontend: http://localhost:8080
 - API health check: http://localhost:3000/api/v1/health
 - OpenAPI UI: http://localhost:3000/api-docs
+- Local email inbox: http://localhost:8025
 
 ## Database seed
 
-After setting `backend/.env` and starting MongoDB, seed the default roles:
+The Docker `seed` service creates the default roles automatically. To seed a locally run API manually:
 
 ```bash
 npm run seed -w backend
